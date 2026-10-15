@@ -281,7 +281,7 @@
     function tb(id,label,icon){return '<button class="tab" data-ago="'+id+'">'+I(icon)+'<span>'+label+'</span></button>';}
     $('#app').innerHTML='<div class="shell"><aside class="side">'+
       '<div class="side-brand"><img src="assets/icons/icon.svg" alt=""/> Vozimi <span class="admin-tag">admin</span></div>'+
-      '<nav class="nav-group" id="aNav">'+nb('adash','Dashboard','dashboard')+nb('ausers','Users','user')+nb('atickets','Tickets','help')+nb('aai','AI usage','agent')+nb('alog','Activity','ledger')+'</nav>'+
+      '<nav class="nav-group" id="aNav">'+nb('adash','Dashboard','dashboard')+nb('ausers','Users','user')+nb('apay','Payments','invoice')+nb('atickets','Tickets','help')+nb('aai','AI usage','agent')+nb('alog','Activity','ledger')+'</nav>'+
       '<div class="side-foot"><div class="side-user">'+esc(S.user.email)+'</div>'+
         '<button class="nav-item" id="bellBtn">'+I('bell')+'<span>Notifications</span><span class="nbadge" id="anbadgeS"></span></button>'+
         '<button class="nav-item" id="themeToggle" data-theme-btn></button>'+
@@ -306,7 +306,7 @@
   function adminGo(route){
     $all('[data-ago]').forEach(function(el){el.classList.toggle('active',el.getAttribute('data-ago')===route);});
     var v=$('#aView');if(!v)return;v.innerHTML='<div class="view" id="aInner"></div>';var root=$('#aInner');
-    (route==='ausers'?adminUsers:route==='atickets'?adminTickets:route==='aai'?adminAi:route==='alog'?adminLog:adminDash)(root);
+    (route==='ausers'?adminUsers:route==='apay'?adminPayments:route==='atickets'?adminTickets:route==='aai'?adminAi:route==='alog'?adminLog:adminDash)(root);
   }
   function aKpi(label,val,cls){return '<div class="kpi '+(cls||'')+'"><div class="kl">'+esc(label)+'</div><div class="kv">'+val+'</div></div>';}
   function userRow(u){
@@ -329,23 +329,46 @@
       api('adminUserDetail',{userId:id}).then(function(d){var u=d.user,c=d.counts;
         var rows=[['Projects',c.projects],['Transactions',c.txns],['Bookings',c.bookings],['Invoices',c.invoices],['GST files',c.gstFiles],['Loans',c.loans],['Tickets',c.tickets]];
         var recent=(d.recent||[]).map(function(r){return '<div class="s" style="padding:4px 0;border-bottom:1px solid var(--line)">'+tDateTime(r.ts)+' · '+esc(r.action)+' '+esc(r.entity||'')+(r.detail?' · '+esc(r.detail):'')+'</div>';}).join('')||'<p class="muted" style="font-size:13px">No recent activity.</p>';
-        $('#udBody',root).innerHTML='<div class="th-head"><div class="t">'+esc(u.name||u.email)+' <span class="st-badge st-'+u.status+'">'+esc(u.status.replace("_"," "))+'</span></div><div class="s">'+esc(u.email)+(u.whatsapp?' · '+esc(u.whatsapp):'')+' · '+esc(u.category||'')+'</div><div class="s">Joined '+fmtDate(u.createdAt)+' · Last active '+(d.lastActive?tDateTime(d.lastActive):'never')+' · AI today '+d.aiToday+'/'+d.aiCap+'</div></div>'+
+        var planBadge=u.plan==='pro'?'<span class="st-badge st-active">Pro</span>':(u.plan==='expired'?'<span class="st-badge st-suspended">Pro lapsed</span>':'<span class="st-badge">Free</span>');
+        var planLine=u.plan==='pro'?('Pro until '+(u.planUntil?tDateTime(u.planUntil):'?')):(u.plan==='expired'?('Lapsed '+(u.planUntil?fmtDate(u.planUntil):'')):'Free plan');
+        $('#udBody',root).innerHTML='<div class="th-head"><div class="t">'+esc(u.name||u.email)+' <span class="st-badge st-'+u.status+'">'+esc(u.status.replace("_"," "))+'</span> '+planBadge+'</div><div class="s">'+esc(u.email)+(u.whatsapp?' · '+esc(u.whatsapp):'')+' · '+esc(u.category||'')+'</div><div class="s">Joined '+fmtDate(u.createdAt)+' · Last active '+(d.lastActive?tDateTime(d.lastActive):'never')+' · AI today '+d.aiToday+'/'+d.aiCap+'</div></div>'+
           '<div class="ud-grid">'+rows.map(function(r){return '<div class="ud-cell"><div class="kv">'+r[1]+'</div><div class="kl">'+r[0]+'</div></div>';}).join('')+'</div>'+
+          '<div class="card" style="margin-top:14px;padding:12px"><div class="s" style="margin-bottom:8px"><b>Plan:</b> '+esc(planLine)+(u.hasSub?' · has subscription':'')+'</div>'+
+            '<label style="font-size:12px;color:var(--muted)">Grant Pro (no payment) for</label>'+
+            '<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><input id="udDays" type="number" min="1" value="30" style="width:90px"/><span class="s">days</span>'+
+            '<button class="btn btn-primary btn-sm" id="udGrant">Grant Pro</button>'+(u.plan!=='free'?'<button class="btn btn-ghost btn-sm" id="udRevoke">Revert to Free</button>':'')+'</div></div>'+
           '<div class="field" style="margin-top:14px"><label>Daily AI cap'+(d.aiCapCustom?' (custom)':' (default)')+'</label><div style="display:flex;gap:8px"><input id="udCap" type="number" value="'+d.aiCap+'"/><button class="btn btn-primary btn-sm" id="udCapSave">Set</button></div></div>'+
           '<h3 style="font-size:14px;margin:16px 0 6px">Recent activity</h3>'+recent;
         $('#udCapSave',root).onclick=function(){api('adminSetUserQuota',{userId:id,aiCap:Number($('#udCap',root).value)||0}).then(function(){toast('AI cap set','ok');}).catch(function(e){toast(errMsg(e),'err');});};
+        $('#udGrant',root).onclick=function(){var days=Math.max(1,Number($('#udDays',root).value)||30);var btn=this;btn.disabled=true;api('adminSetUserPlan',{userId:id,plan:'pro',days:days}).then(function(){toast('Pro granted for '+days+' days','ok');openUserDetail(id);}).catch(function(e){btn.disabled=false;toast(errMsg(e),'err');});};
+        var rv=$('#udRevoke',root);if(rv)rv.onclick=function(){confirmSheet('Revert this user to the Free plan?',function(){api('adminSetUserPlan',{userId:id,plan:'free'}).then(function(){toast('Reverted to Free','ok');openUserDetail(id);}).catch(function(e){toast(errMsg(e),'err');});});};
       }).catch(function(e){$('#udBody',root).innerHTML='<p class="muted">'+esc(errMsg(e))+'</p>';});
     });
   }
   function setUserStatus(userId,status){api('adminSetUserStatus',{userId:userId,status:status}).then(function(){toast(status==='active'?'Approved':'Updated','ok');var a=$('[data-ago].active');adminGo(a?a.getAttribute('data-ago'):'adash');}).catch(function(e){toast(errMsg(e),'err');});}
   function adminDash(root){
-    root.innerHTML=pageHead('Admin dashboard','Users and activity','<button class="btn btn-primary btn-sm" id="aBroadcast">'+I('bell')+' Announcement</button>')+'<div class="kpis" id="aKpis">'+'<div class="skeleton" style="height:84px"></div>'.repeat(4)+'</div>'+
-      '<div class="card" style="margin-top:16px"><div class="card-h"><h3>Awaiting approval</h3></div><div id="aPending"><div class="skeleton" style="height:90px"></div></div></div>';
+    root.innerHTML=pageHead('Admin dashboard','Insights across Vozimi','<button class="btn btn-primary btn-sm" id="aBroadcast">'+I('bell')+' Announcement</button>')+
+      '<h3 class="sec-h">Revenue</h3><div class="kpis" id="aRev">'+'<div class="skeleton" style="height:84px"></div>'.repeat(4)+'</div>'+
+      '<h3 class="sec-h" style="margin-top:18px">Users</h3><div class="kpis" id="aKpis">'+'<div class="skeleton" style="height:84px"></div>'.repeat(4)+'</div>'+
+      '<div class="card" style="margin-top:16px"><div class="card-h"><h3>Recent signups</h3></div><div id="aPending"><div class="skeleton" style="height:90px"></div></div></div>';
     $('#aBroadcast').onclick=function(){openBroadcastSheet();};
-    api('adminStats',{}).then(function(d){var s=d.stats;var k=$('#aKpis');if(k)k.innerHTML=aKpi('Total users',s.total)+aKpi('Active',s.active,'pos')+aKpi('Pending',s.pending)+aKpi('Open tickets',s.openTickets);}).catch(function(e){toast(errMsg(e),'err');});
-    api('adminListUsers',{status:'pending'}).then(function(d){var el=$('#aPending');if(!el)return;
-      if(!d.users.length){el.innerHTML='<div class="empty"><div class="ei">'+I('check')+'</div><h3>All caught up</h3><p>No one waiting for approval.</p></div>';return;}
-      el.innerHTML=d.users.map(userRow).join('');bindUserActions(el);}).catch(function(e){toast(errMsg(e),'err');});
+    api('adminStats',{}).then(function(d){var s=d.stats;
+      var r=$('#aRev');if(r)r.innerHTML=aKpi('Revenue today',money(s.revenueToday),'pos')+aKpi('Payments today',s.paymentsToday)+aKpi('This month',money(s.revenueMonth))+aKpi('All time',money(s.revenueTotal));
+      var k=$('#aKpis');if(k)k.innerHTML=aKpi('Total users',s.total)+aKpi('Pro (active)',s.proActive,'pos')+aKpi('Free',s.free)+aKpi('Pro lapsed',s.proLapsed)+aKpi('New 7 days',s.signups7)+aKpi('New 30 days',s.signups30)+aKpi('Suspended',s.suspended)+aKpi('Open tickets',s.openTickets);
+    }).catch(function(e){toast(errMsg(e),'err');});
+    api('adminListUsers',{sort:'newest'}).then(function(d){var el=$('#aPending');if(!el)return;
+      var rows=(d.users||[]).slice(0,8);
+      if(!rows.length){el.innerHTML='<div class="empty"><div class="ei">'+I('user')+'</div><h3>No users yet</h3></div>';return;}
+      el.innerHTML=rows.map(userRow).join('');bindUserActions(el);}).catch(function(e){toast(errMsg(e),'err');});
+  }
+  function adminPayments(root){
+    root.innerHTML=pageHead('Payments','Completed Razorpay payments')+'<div class="kpis" id="payK">'+'<div class="skeleton" style="height:84px"></div>'.repeat(4)+'</div>'+
+      '<div class="card" style="margin-top:16px"><div class="card-h"><h3>All payments</h3></div><div id="payList"><div class="skeleton" style="height:160px"></div></div></div>';
+    api('adminPayments',{}).then(function(d){var t=d.totals||{};var k=$('#payK');
+      if(k)k.innerHTML=aKpi('Today',money(t.today),'pos')+aKpi('Today count',t.todayCount||0)+aKpi('This month',money(t.month))+aKpi('All time',money(t.all)+' · '+(t.count||0));
+      var el=$('#payList');if(!el)return;var ps=d.payments||[];
+      el.innerHTML=ps.length?ps.map(function(p){return '<div class="item" style="cursor:default"><div class="av">'+I('invoice')+'</div><div class="meta"><div class="t">'+money(p.amount)+' <span class="muted" style="font-weight:400">· '+esc(p.interval||'')+'</span></div><div class="s">'+esc(p.email||p.userId)+' · '+tDateTime(p.at)+'</div><div class="s muted" style="font-size:11px">'+esc(p.paymentId||'')+'</div></div></div>';}).join(''):'<div class="empty"><div class="ei">'+I('invoice')+'</div><h3>No payments yet</h3><p>Completed payments will appear here.</p></div>';
+    }).catch(function(e){toast(errMsg(e),'err');});
   }
   function openBroadcastSheet(){
     openSheet('Send announcement','<p class="muted" style="margin:0 0 12px;font-size:13.5px">Shows in every user\'s notifications bell. Optionally email all active users too.</p>'+
