@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>About &middot; Vozimi</title>
+<meta name="description" content="Who we are and why we built Vozimi, a voice-first CRM for builders."/>
+<meta name="theme-color" content="#0B0B0C"/>
+<link rel="icon" href="assets/icons/icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+<header class="nav scrolled"><div class="wrap nav-in">
+  <a class="brand" href="index.html"><img src="assets/icons/icon.svg" alt=""/> Vozimi</a>
+  <a class="btn btn-dark" href="app.html">Open app</a>
+</div></header>
+
+<main class="doc">
+  <h1>Who we are</h1>
+  <p class="updated">A small team building the simplest money tool for people who build.</p>
+
+  <h2>Why Vozimi exists</h2>
+  <p>Vozimi started with a real builder. Like most people running a site, he tracked every payment, vendor and booking in a tangle of spreadsheets, and the numbers never quite added up in time. The CRMs on the market were built for sales teams, not for someone standing on a slab at the end of the day.</p>
+  <p>So we built the opposite of a complicated CRM: one you can talk to. You say what you paid or received, and Vozimi turns it into a clean, categorised entry, then shows your cashflow and profit. That is the whole idea.</p>
+
+  <h2>What we believe</h2>
+  <ul>
+    <li><strong>Simple wins.</strong> If a feature needs a manual, it does not belong on a job site.</li>
+    <li><strong>Your data is yours.</strong> Everything lives in your own Google Sheet, exportable any time.</li>
+    <li><strong>Security first.</strong> Secrets never reach your phone or browser; sign-in uses short-lived tokens.</li>
+    <li><strong>Honest pricing.</strong> Start free. Pay only when it is clearly saving you time and money.</li>
+  </ul>
+
+  <h2>How it works, in one line</h2>
+  <p>Your spoken sentence goes to OpenAI GPT through a secure Google Apps Script backend, which writes a structured entry into your Google Sheet and powers your dashboard, invoices, reminders and reports.</p>
+
+  <h2>Where we are</h2>
+  <p>Vozimi is an early product built for and with real builders in India, and designed to travel. If you run a site and want it to work for your workflow, <a href="contact.html">tell us</a>.</p>
+
+  <p style="margin-top:28px"><a class="btn btn-dark" href="app.html">Open Vozimi</a> &nbsp; <a class="btn btn-ghost" href="contact.html">Contact us</a></p>
+</main>
+
+<footer class="policy-foot"><div class="wrap">
+  <span class="muted" style="font-size:13.5px">&copy; <span id="yr"></span> Vozimi. Prototype.</span>
+  <nav class="policy-links">
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="dmca.html">DMCA</a>
+  </nav>
+</div></footer>
+<script src="js/consent.js"></script>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

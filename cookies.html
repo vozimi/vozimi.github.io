@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cookie Policy &middot; Vozimi</title>
+<meta name="description" content="How Vozimi uses browser storage and cookies."/>
+<meta name="theme-color" content="#0B0B0C"/>
+<link rel="icon" href="assets/icons/icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+<header class="nav scrolled"><div class="wrap nav-in">
+  <a class="brand" href="index.html"><img src="assets/icons/icon.svg" alt=""/> Vozimi</a>
+  <a class="btn btn-ghost" href="index.html">Back to home</a>
+</div></header>
+
+<main class="doc">
+  <h1>Cookie Policy</h1>
+  <p class="updated">Prototype notice. Vozimi keeps tracking to a minimum.</p>
+
+  <h2>Your consent controls analytics</h2>
+  <p>By default Vozimi uses only the essential storage needed to run the app. We do not set advertising cookies or track you across other websites. With your consent (via the banner shown on your first visit) we may enable analytics, such as Google Analytics, to understand usage and improve the product. You can decline, and you can change your mind any time by clearing site data.</p>
+
+  <h2>Local storage we do use</h2>
+  <p>To make the app work, we store a few items in your browser's local storage (not traditional cookies):</p>
+  <ul>
+    <li><strong>Sign-in token:</strong> a short-lived signed token so you stay logged in.</li>
+    <li><strong>Selected project:</strong> remembers which project you were viewing.</li>
+    <li><strong>App cache:</strong> a service worker caches the app's files so it loads fast and works offline.</li>
+  </ul>
+  <p>These stay on your device and are not shared. Clearing your browser's site data removes them and signs you out.</p>
+
+  <h2>Analytics (only with consent)</h2>
+  <p>If you accept analytics, Google Analytics may set its own cookies to measure visits and usage in aggregate. We use this to improve the product, not to identify you personally. If you decline, these are not loaded.</p>
+
+  <h2>Payments</h2>
+  <p>When you make a payment, our gateway <strong>Razorpay</strong> may set cookies that are strictly necessary to process the transaction securely and prevent fraud during checkout. These are governed by Razorpay's own cookie and privacy policies.</p>
+
+  <h2>Third parties</h2>
+  <p>The site loads fonts from Google Fonts and a couple of script libraries from public CDNs to render charts and PDFs. These may receive your IP address as part of serving those files, per their own policies.</p>
+
+  <h2>Control</h2>
+  <p>You can clear local storage at any time from your browser settings. The app will simply ask you to sign in again.</p>
+</main>
+
+<footer class="policy-foot"><div class="wrap">
+  <span class="muted" style="font-size:13.5px">&copy; <span id="yr"></span> Vozimi. Prototype.</span>
+  <nav class="policy-links">
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund</a><a href="cookies.html">Cookies</a><a href="dmca.html">DMCA</a>
+  </nav>
+</div></footer>
+<script src="js/consent.js"></script>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>

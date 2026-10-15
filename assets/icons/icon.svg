@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vozimi">
+  <rect width="512" height="512" rx="116" fill="#0B0B0C"/>
+  <!-- voice waveform that doubles as ledger/log bars -->
+  <g fill="#FFFFFF">
+    <rect x="96"  y="206" width="30" height="100" rx="15"/>
+    <rect x="148" y="171" width="30" height="170" rx="15"/>
+    <rect x="200" y="131" width="30" height="250" rx="15"/>
+    <rect x="252" y="101" width="30" height="310" rx="15"/>
+    <rect x="304" y="131" width="30" height="250" rx="15"/>
+    <rect x="356" y="171" width="30" height="170" rx="15"/>
+    <rect x="408" y="206" width="30" height="100" rx="15"/>
+  </g>
+</svg>

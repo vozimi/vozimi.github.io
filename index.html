@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Vozimi — voice, invoice and logs in one place</title>
+<meta name="description" content="Vozimi is the simplest way to run your business books. Just say what you earned or spent and it logs, categorises and charts your cashflow, raises invoices, and tracks dues, for contractors, farmers, shops, creators and any small business. No spreadsheets, no accountant."/>
+<meta name="theme-color" content="#0B0B0C"/>
+<link rel="icon" href="assets/icons/icon.svg"/>
+<link rel="apple-touch-icon" href="assets/icons/icon.svg"/>
+<link rel="manifest" href="manifest.webmanifest"/>
+<meta property="og:title" content="Vozimi — voice, invoice and logs in one place"/>
+<meta property="og:description" content="Just say what you earned or spent. Vozimi keeps your books, raises invoices and tracks dues. Built for small business."/>
+<meta property="og:type" content="website"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top"><img src="assets/icons/icon.svg" alt=""/> Vozimi</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#try">Try it</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#reviews">Reviews</a>
+      <a href="contact.html">Help</a>
+      <a class="mobile-only" href="app.html">Sign in</a>
+      <a class="mobile-only" href="app.html?signup=1">Sign up</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="app.html">Sign in</a>
+      <a class="btn btn-dark" href="app.html?signup=1">Sign up free</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal in">
+      <span class="eyebrow"><span class="dot"></span> Voice &middot; Invoice &middot; Logs</span>
+      <h1 class="hero-title">Your books, done the moment you say it.</h1>
+      <p class="hero-sub">Just speak what you earned or spent. Vozimi turns it into a clean, categorised entry and keeps your cashflow, profit, invoices and dues up to date, no spreadsheets, no accountant, no evenings lost to data entry.</p>
+      <ul class="aud-chips" aria-label="Who it is for">
+        <li>Contractors &amp; builders</li>
+        <li>Architects</li>
+        <li>Farmers</li>
+        <li>Small &amp; sole business owners</li>
+        <li>Influencers &amp; creators</li>
+      </ul>
+      <div class="hero-cta">
+        <a class="btn btn-dark btn-lg" href="app.html?signup=1">Sign up free</a>
+        <a class="btn btn-ghost btn-lg" href="#try">Try the live demo</a>
+      </div>
+      <p class="hero-note">Pick your line of work at sign up and your vendors, categories and dashboard are set up for you. Works on web and Android. Documents you upload are <b>end-to-end encrypted</b>, only you can open them.</p>
+    </div>
+    <div class="reveal in" data-d="1">
+      <p class="demo-cap">See it work &mdash; tap your line of work</p>
+      <div class="demo-tabs" id="demoTabs" role="tablist">
+        <button class="on" data-dt="builder">Builder</button>
+        <button data-dt="farmer">Farmer</button>
+        <button data-dt="shop">Shop</button>
+        <button data-dt="creator">Creator</button>
+      </div>
+      <div class="mock">
+        <div class="mock-head"><strong id="dmProj">Riverside Towers</strong><span class="chip">Today</span></div>
+        <div class="mic" aria-hidden="true" data-ic="mic"></div>
+        <div class="said" id="dmSaid">"Paid 45 thousand to Sharma Steel today."</div>
+        <div class="chip-row" id="dmChips">
+          <span class="chip exp">Expense</span>
+          <span class="chip">Steel</span>
+          <span class="chip">Sharma Steel</span>
+          <span class="chip amt">&#8377;45,000</span>
+        </div>
+        <div class="entry-card">
+          <div><div class="muted" style="font-size:12.5px" id="dmLedger">Logged to ledger</div><b id="dmEntry">Sharma Steel &middot; Steel</b></div>
+          <b id="dmAmt" style="color:var(--expense)">&minus; &#8377;45,000</b>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">The problem</div>
+      <h2>Small businesses lose money in the gaps, not the ledger.</h2>
+      <p>Notebooks go missing. The accountant sees it months later. Invoices wait, dues slip, and nobody really knows this month's profit. Vozimi closes those gaps the moment money moves.</p>
+    </div>
+    <div class="prob-grid reveal" data-d="1">
+      <div class="prob-card"><h3>Notebooks &amp; WhatsApp notes</h3><p>Scribbled entries get lost and never add up. Say it once and it is logged, sorted and safe.</p></div>
+      <div class="prob-card"><h3>Spreadsheets you dread</h3><p>No formulas, no tabs, no laptop. Your dashboard builds itself as you speak.</p></div>
+      <div class="prob-card"><h3>Waiting on the accountant</h3><p>See profit, GST, dues and budgets today, not at year end.</p></div>
+      <div class="prob-card"><h3>Chasing payments</h3><p>Know who owes you and nudge them on WhatsApp in one tap.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- POWERED BY / TRUST -->
+<section class="powered">
+  <div class="wrap">
+    <p class="powered-label reveal">Built on tools you already trust</p>
+    <div class="badges reveal" data-d="1">
+      <span class="badge"><span data-ic="agent"></span> OpenAI GPT</span>
+      <span class="badge"><span data-ic="settings"></span> Cloudflare edge</span>
+      <span class="badge"><span data-ic="folder"></span> Encrypted storage</span>
+      <span class="badge"><span data-ic="mail"></span> Resend email</span>
+    </div>
+  </div>
+</section>
+
+<!-- SHOWCASE BAND -->
+<section class="showcase">
+  <div class="wrap">
+    <div class="show-grid">
+      <article class="show-card show-dark reveal">
+        <div class="show-text">
+          <span class="show-tag"><span data-ic="mic"></span> Voice first</span>
+          <h3>One sentence. Fully sorted.</h3>
+          <p>Say what you paid or received. Vozimi pulls out the amount, vendor, category and date, and files it under the right project. No forms, no fiddling.</p>
+        </div>
+        <div class="show-demo">
+          <div class="show-said">"Paid 45 thousand to Sharma Steel today"</div>
+          <div class="chip-row">
+            <span class="chip exp">Expense</span><span class="chip">Steel</span><span class="chip">Sharma Steel</span><span class="chip amt">&#8377;45,000</span>
+          </div>
+        </div>
+      </article>
+      <article class="show-card reveal" data-d="1">
+        <span class="show-tag light"><span data-ic="trendUp"></span> Instant</span>
+        <h3>Logged in seconds</h3>
+        <p>No end-of-day data entry. It is in your ledger before you reach the next floor.</p>
+        <div class="wave static" id="showWave"></div>
+      </article>
+      <article class="show-card reveal" data-d="2">
+        <span class="show-tag light"><span data-ic="agent"></span> Any language</span>
+        <h3>Speaks your language</h3>
+        <p>English, Hindi, Marathi, Gujarati and more, even mixed Hinglish.</p>
+        <div class="lang-chips"><span>English</span><span>&#2361;&#2367;&#2306;&#2342;&#2368;</span><span>&#2350;&#2352;&#2366;&#2336;&#2368;</span><span>&#2711;&#2753;&#2716;&#2736;&#2750;&#2724;&#2752;</span><span>&#2980;&#2990;&#3007;&#2996;&#3021;</span><span>&#2476;&#2494;&#2434;&#2482;&#2494;</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Everything, nothing more</div>
+      <h2>The CRM that fits in one thumb</h2>
+      <p>Only the features you actually use, each one two taps away.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal"><div class="ico" data-ic="mic"></div><h3>Voice entry</h3><p>Speak the day's payments and receipts. GPT fills in amount, vendor, category and date.</p></div>
+      <div class="feat reveal" data-d="1"><div class="ico" data-ic="building"></div><h3>Workspaces</h3><p>Track each project, farm, store or channel separately. Everything rolls up per workspace.</p></div>
+      <div class="feat reveal" data-d="2"><div class="ico" data-ic="cube"></div><h3>Vendors &amp; salaries</h3><p>Steel, cement, tiles, labour, watchmen, CA and more. Add your own types any time.</p></div>
+      <div class="feat reveal"><div class="ico" data-ic="trendUp"></div><h3>Cashflow dashboard</h3><p>Pie and trend charts, income vs expense, and profit, with custom date reports.</p></div>
+      <div class="feat reveal" data-d="1"><div class="ico" data-ic="doc"></div><h3>Invoices &amp; GST vault</h3><p>Generate customer invoices; upload vendor GST bills and download them as one bundle.</p></div>
+      <div class="feat reveal" data-d="2"><div class="ico" data-ic="bell"></div><h3>Reminders &amp; email</h3><p>Never miss a payment. Get a daily cashflow summary in your inbox.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">How it works</div>
+      <h2>Three steps, zero training</h2>
+      <p>If a feature needs a manual, it does not belong here.</p>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="n">1</div><h3>Speak or type</h3><p>"Received 5 lakh booking for a 2BHK from Mr. Patil." Tap the mic and talk.</p></div>
+      <div class="step reveal" data-d="1"><div class="n">2</div><h3>Confirm the entry</h3><p>Vozimi shows what it understood. Fix anything in a tap, then save.</p></div>
+      <div class="step reveal" data-d="2"><div class="n">3</div><h3>Watch it add up</h3><p>Your dashboard updates instantly: income, expense, profit and projections.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRY IT (interactive workflow) -->
+<section class="tryit" id="try">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Try it now</div>
+      <h2>See what happens after you speak</h2>
+      <p>No sign-up. Type a sentence (or pick one) and watch Vozimi hear it, understand it, log it, and update your dashboard.</p>
+    </div>
+    <div class="try-card reveal" data-d="1">
+      <div class="try-in">
+        <input id="tryInput" type="text" placeholder="e.g. Paid 45 thousand to Sharma Steel today" aria-label="Try a sentence"/>
+        <button class="btn btn-accent" id="tryBtn"><span data-ic="play"></span> See it work</button>
+      </div>
+      <div class="try-samples" id="trySamples">
+        <button class="sample">Paid 45 thousand to Sharma Steel today</button>
+        <button class="sample">Received 5 lakh booking for a 2BHK from Mr. Patil</button>
+        <button class="sample">Gave 18k salary to the watchman</button>
+        <button class="sample">Spent 1.2 lakh on cement</button>
+      </div>
+
+      <div class="workflow" id="workflow">
+        <div class="wf-step" data-s="1">
+          <div class="wf-ic" data-ic="mic"></div>
+          <div class="wf-body">
+            <div class="wf-t">You speak</div>
+            <div class="wf-said" id="wfSaid">Tap a sample above, or type your own</div>
+            <div class="wave" id="wfWave"></div>
+          </div>
+        </div>
+        <div class="wf-arrow" data-ic="chevronDown"></div>
+        <div class="wf-step" data-s="2">
+          <div class="wf-ic" data-ic="agent"></div>
+          <div class="wf-body">
+            <div class="wf-t">GPT understands</div>
+            <div class="wf-sub">Pulls out amount, vendor, category and date, in any language</div>
+          </div>
+        </div>
+        <div class="wf-arrow" data-ic="chevronDown"></div>
+        <div class="wf-step" data-s="3">
+          <div class="wf-ic" data-ic="check"></div>
+          <div class="wf-body">
+            <div class="wf-t">Entry logged</div>
+            <div id="wfEntry" class="wf-entry-empty">Your categorised entry appears here</div>
+          </div>
+        </div>
+        <div class="wf-arrow" data-ic="chevronDown"></div>
+        <div class="wf-step" data-s="4">
+          <div class="wf-ic" data-ic="trendUp"></div>
+          <div class="wf-body">
+            <div class="wf-t">Dashboard updates</div>
+            <div class="wf-stats">
+              <div class="wf-stat"><span>Today, money out</span><b id="wfOut">&#8377;0</b></div>
+              <div class="wf-stat"><span>Today, money in</span><b id="wfIn">&#8377;0</b></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="try-note">A quick in-browser preview. The real app uses GPT for sharper understanding, fixes misheard names, handles many entries in one sentence, and works by voice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- POWERED BY GPT (dark band) -->
+<section class="gptband">
+  <div class="wrap">
+    <div class="gpt-card reveal">
+      <div class="gpt-logo"><span data-ic="agent"></span></div>
+      <div class="gpt-content">
+        <div class="gpt-kicker">Powered by GPT</div>
+        <h2>Speak it. It is logged.</h2>
+        <div class="gpt-rows">
+          <div class="gpt-row"><div class="gpt-ic" data-ic="mic"></div><div><b>Understands plain speech</b><p>Say it the way you would say it out loud, in English, Hindi or Marathi. GPT turns it into a clean entry in about a second, no buttons, no copy-paste.</p></div></div>
+          <div class="gpt-row"><div class="gpt-ic" data-ic="cube"></div><div><b>Knows your trade</b><p>Steel, cement, tiles, labour, salaries, bookings, challans. It picks the right category and fixes misheard vendor names.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKS ON BROWSER / PHONE -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Anywhere you work</div>
+      <h2>Same app, web and phone</h2>
+      <p>Start on the laptop in the office, finish on your phone at the site.</p>
+    </div>
+    <div class="devices">
+      <article class="dev-card reveal">
+        <div class="dev-text">
+          <h3>Works right in your browser</h3>
+          <p>Open Vozimi on any computer. Nothing to install, and your data stays in your own Google Sheet.</p>
+          <a class="btn btn-dark" href="app.html">Open in browser</a>
+        </div>
+        <div class="dev-visual">
+          <div class="laptop">
+            <div class="laptop-screen">
+              <div class="mini-top"><span class="mini-brand"><img src="assets/icons/icon.svg" alt=""/> Vozimi</span><span class="mini-chip rec"><i></i> Listening</span></div>
+              <div class="mini-said">"Paid 45 thousand to Sharma Steel"</div>
+              <div class="mini-chips"><span class="chip exp">Expense</span><span class="chip">Steel</span><span class="chip amt">&#8377;45,000</span></div>
+            </div>
+            <div class="laptop-base"></div>
+          </div>
+        </div>
+      </article>
+      <article class="dev-card reveal" data-d="1">
+        <div class="dev-text">
+          <h3>Works on your phone</h3>
+          <p>Install the Android app and log entries by voice from the site, with one thumb.</p>
+          <a class="btn btn-dark" href="app.html">Get the app</a>
+        </div>
+        <div class="dev-visual">
+          <div class="phone">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mini-top"><span class="mini-brand"><img src="assets/icons/icon.svg" alt=""/> Vozimi</span><span class="mini-chip rec"><i></i></span></div>
+              <div class="mini-said">"Received 5 lakh booking, 2BHK"</div>
+              <div class="mini-chips"><span class="chip">Income</span><span class="chip">2BHK</span><span class="chip amt">&#8377;5,00,000</span></div>
+              <div class="phone-mic" data-ic="mic"></div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- HOW WE CAN HELP -->
+<section class="features" id="help">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">How we help</div>
+      <h2>Built for the way a site actually runs</h2>
+      <p>From the first challan to the final profit, Vozimi keeps the money side simple.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal"><div class="ico" data-ic="wallet"></div><h3>Daily site expenses</h3><p>Log steel, cement, tiles, labour and misc as you pay them. No end-of-day data entry.</p></div>
+      <div class="feat reveal" data-d="1"><div class="ico" data-ic="folder"></div><h3>Vendor &amp; GST bills</h3><p>Keep every purchase invoice under its vendor and pull them as one PDF bundle at filing time.</p></div>
+      <div class="feat reveal" data-d="2"><div class="ico" data-ic="home"></div><h3>Bookings &amp; invoices</h3><p>Record unit bookings, raise customer invoices, and see income build up per project.</p></div>
+      <div class="feat reveal"><div class="ico" data-ic="trendUp"></div><h3>Know your profit</h3><p>Income minus land cost and expenses, with a live margin and a simple forward projection.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">What people say</div>
+      <h2>Made for people who do the work, not spreadsheets</h2>
+      <p>Early feedback from across trades.</p>
+    </div>
+    <div class="reviews">
+      <figure class="review reveal">
+        <div class="stars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>I just talk to it after site rounds. By evening my whole day's spend is already sorted by vendor. No more notebook.</blockquote>
+        <figcaption><span class="av">RL</span><span><b>Rajesh L.</b><small>Builder, Pune</small></span></figcaption>
+      </figure>
+      <figure class="review reveal" data-d="1">
+        <div class="stars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>Seeds, diesel, labour, mandi sales, I just say it in Marathi. At season end I finally know what each crop actually earned.</blockquote>
+        <figcaption><span class="av">VP</span><span><b>Vitthal P.</b><small>Farmer, Ahmednagar</small></span></figcaption>
+      </figure>
+      <figure class="review reveal" data-d="2">
+        <div class="stars" aria-label="5 out of 5">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <blockquote>Brand deals, editor payments, gear, it is all tracked. Raising an invoice for a sponsor takes me ten seconds now.</blockquote>
+        <figcaption><span class="av">NK</span><span><b>Neha K.</b><small>Creator, Mumbai</small></span></figcaption>
+      </figure>
+    </div>
+    <p class="center muted" style="margin-top:20px;font-size:13px">Illustrative feedback from the prototype trial.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="kicker">Pricing</div>
+      <h2>Honest, simple pricing</h2>
+      <p>Start free on your own Google Sheet. Upgrade only when it is paying for itself.</p>
+    </div>
+    <div class="price-grid">
+      <div class="plan reveal">
+        <h3>Starter</h3>
+        <div class="amt">&#8377;0<small> /mo</small></div>
+        <ul><li>1 project</li><li>Voice &amp; manual entry</li><li>Cashflow dashboard</li><li>Your own Google Sheet</li></ul>
+        <a class="btn btn-ghost" href="app.html">Get started</a>
+      </div>
+      <div class="plan featured reveal" data-d="1">
+        <h3>Builder</h3>
+        <div class="amt">&#8377;499<small> /mo</small></div>
+        <ul><li>Unlimited projects</li><li>Invoices &amp; GST vault</li><li>Daily email reports</li><li>Reminders &amp; projections</li><li>Android app</li></ul>
+        <a class="btn btn-dark" href="app.html">Start free trial</a>
+      </div>
+      <div class="plan reveal" data-d="2">
+        <h3>Firm</h3>
+        <div class="amt">Let's talk</div>
+        <ul><li>Multiple users &amp; roles</li><li>Custom categories &amp; reports</li><li>Priority support</li><li>Data export &amp; backups</li></ul>
+        <a class="btn btn-ghost" href="#contact">Contact us</a>
+      </div>
+    </div>
+    <div class="pay-strip reveal">
+      <span class="pay-label">Pay securely with</span>
+      <span class="pay-badge pb-visa">VISA</span>
+      <span class="pay-badge pb-mc"><i></i><i></i></span>
+      <span class="pay-badge pb-amex">AMEX</span>
+      <span class="pay-badge pb-upi">UPI</span>
+      <span class="pay-badge pb-gpay">G&nbsp;Pay</span>
+      <span class="pay-badge pb-ppe">PhonePe</span>
+      <span class="pay-badge pb-rzp">Razorpay</span>
+    </div>
+    <p class="center muted" style="margin-top:16px;font-size:13.5px">Prototype pricing, indicative only. Payments secured by Razorpay. See our <a href="refund.html">Refund policy</a>.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap" style="max-width:760px">
+    <div class="sec-head reveal"><div class="kicker">FAQ</div><h2>Good questions</h2></div>
+    <div id="faqList"></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" style="padding-top:0">
+  <div class="cta-band reveal">
+    <h2>Your money, finally in one place.</h2>
+    <p>Set it up in minutes. Speak your first entry today, whatever your line of work.</p>
+    <a class="btn btn-accent btn-lg" href="app.html?signup=1">Sign up free</a>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-brandcol">
+        <a class="brand" href="#top"><img src="assets/icons/icon.svg" alt=""/> Vozimi</a>
+        <p class="muted" style="max-width:34ch;margin:12px 0 0;font-size:14px">Your ledger, by voice. Your data stays private and secure.</p>
+        <p class="powered-foot"><span data-ic="agent"></span> Powered by GPT</p>
+      </div>
+      <div class="foot-cols">
+        <div class="foot-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#try">Try the demo</a>
+          <a href="#pricing">Pricing</a>
+          <a href="app.html">Open app</a>
+        </div>
+        <div class="foot-col">
+          <h4>Company</h4>
+          <a href="about.html">About us</a>
+          <a href="#how">How it works</a>
+          <a href="#reviews">Reviews</a>
+          <a href="contact.html">Contact</a>
+        </div>
+        <div class="foot-col">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy</a>
+          <a href="terms.html">Terms</a>
+          <a href="refund.html">Refund &amp; Cancellation</a>
+          <a href="cookies.html">Cookie Policy</a>
+          <a href="dmca.html">DMCA</a>
+        </div>
+      </div>
+    </div>
+    <div class="copy">&copy; <span id="yr"></span> Vozimi. Voice, invoice and logs for small business.</div>
+  </div>
+</footer>
+
+<a class="help-fab" href="contact.html" aria-label="Help and support" title="Help & Support"><span data-ic="help"></span></a>
+
+<script src="js/config.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/consent.js"></script>
+<script src="js/site.js"></script>
+<script>
+/* Multi-profession demo swapper for the hero mock. */
+(function(){
+  var D={
+    builder:{proj:'Riverside Towers',said:'"Paid 45 thousand to Sharma Steel today."',chips:[['exp','Expense'],['','Steel'],['','Sharma Steel'],['amt','₹45,000']],ledger:'Logged to ledger',entry:'Sharma Steel · Steel',amt:'− ₹45,000',out:true},
+    farmer:{proj:'North Field',said:'"Paid 8 thousand for seeds today."',chips:[['exp','Expense'],['','Seeds'],['','Agro Seeds'],['amt','₹8,000']],ledger:'Logged to ledger',entry:'Agro Seeds · Seeds',amt:'− ₹8,000',out:true},
+    shop:{proj:'My Store',said:'"Sold goods for 12 thousand today."',chips:[['inc','Income'],['','Sales'],['','Counter'],['amt','₹12,000']],ledger:'Logged to ledger',entry:'Daily sales',amt:'+ ₹12,000',out:false},
+    creator:{proj:'My Channel',said:'"Received 50 thousand brand deal today."',chips:[['inc','Income'],['','Brand Deal'],['','Sponsor'],['amt','₹50,000']],ledger:'Logged to ledger',entry:'Brand deal',amt:'+ ₹50,000',out:false}
+  };
+  var tabs=document.getElementById('demoTabs');if(!tabs)return;
+  function set(k){var d=D[k];if(!d)return;
+    document.getElementById('dmProj').textContent=d.proj;
+    document.getElementById('dmSaid').textContent=d.said;
+    document.getElementById('dmChips').innerHTML=d.chips.map(function(c){return '<span class="chip'+(c[0]?' '+c[0]:'')+'">'+c[1]+'</span>';}).join('');
+    document.getElementById('dmEntry').textContent=d.entry;
+    var a=document.getElementById('dmAmt');a.textContent=d.amt;a.style.color='var(--'+(d.out?'expense':'income')+')';
+  }
+  tabs.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
+    Array.prototype.forEach.call(tabs.children,function(x){x.classList.toggle('on',x===b);});set(b.getAttribute('data-dt'));});
+})();
+</script>
+</body>
+</html>

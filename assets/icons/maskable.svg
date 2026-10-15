@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Vozimi">
+  <rect width="512" height="512" fill="#0B0B0C"/>
+  <!-- extra padding for the maskable safe zone (~70% centered) -->
+  <g fill="#FFFFFF">
+    <rect x="160" y="222" width="22" height="68"  rx="11"/>
+    <rect x="197" y="197" width="22" height="118" rx="11"/>
+    <rect x="234" y="168" width="22" height="176" rx="11"/>
+    <rect x="271" y="147" width="22" height="218" rx="11"/>
+    <rect x="308" y="168" width="22" height="176" rx="11"/>
+    <rect x="345" y="197" width="22" height="118" rx="11"/>
+    <rect x="382" y="222" width="22" height="68"  rx="11"/>
+  </g>
+</svg>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Privacy Policy &middot; Vozimi</title>
+<meta name="description" content="How Vozimi handles your data. Your projects and transactions stay in your own Google Sheet."/>
+<meta name="theme-color" content="#0B0B0C"/>
+<link rel="icon" href="assets/icons/icon.svg"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/site.css"/>
+</head>
+<body>
+<header class="nav scrolled"><div class="wrap nav-in">
+  <a class="brand" href="index.html"><img src="assets/icons/icon.svg" alt=""/> Vozimi</a>
+  <a class="btn btn-ghost" href="index.html">Back to home</a>
+</div></header>
+
+<main class="doc">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Prototype notice. This describes how the Vozimi prototype handles data.</p>
+
+  <h2>Accounts and verification</h2>
+  <p>To use Vozimi you create an account with your name, email and a password. We verify your email with a one-time code (OTP), and new accounts are reviewed and approved before access. Your password is never stored in plain text; it is kept as a salted PBKDF2 hash.</p>
+
+  <h2>Where your data lives</h2>
+  <p>Your projects, transactions, vendors, bookings, invoices and reminders are stored in our secure database (Cloudflare D1), isolated per account so no other user can see your data. Uploaded files, such as GST invoices, are stored privately in object storage (Cloudflare R2) and served back only to you. We can export or delete your data on request.</p>
+
+  <h2>Secrets and keys</h2>
+  <p>Service API keys (OpenAI, email, payments) live only as server-side secrets in our backend. They are never sent to the browser or the mobile app, and never stored in the app's code or in your account.</p>
+
+  <h2>Voice and AI</h2>
+  <p>When you use voice entry, your device converts speech to text, and that text (not audio) is sent to the OpenAI GPT API through the backend to extract the transaction details. Only the sentence you spoke is sent; it is used to produce the structured entry and is subject to OpenAI's data policies.</p>
+
+  <h2>Email</h2>
+  <p>If you enable email reports and reminders, messages are sent via Resend to the address you configure. We do not use your email for anything else.</p>
+
+  <h2>Payments (Razorpay)</h2>
+  <p>When paid plans are active, payments are processed by <strong>Razorpay</strong>, our payment gateway. To take a payment we share the details necessary to complete it, such as your name, email, amount and billing identifiers, with Razorpay. We do <strong>not</strong> store your full card, UPI or bank details on our servers; those are handled by Razorpay under their own privacy policy and security standards (PCI-DSS). We keep a record of your plan, invoices and transaction references for accounting and support.</p>
+
+  <h2>Analytics</h2>
+  <p>We may use privacy-respecting analytics, such as Google Analytics, to understand how the site is used and improve it. Analytics load <strong>only if you accept</strong> via the cookie banner. If you decline, we use only the essential storage needed to run the app. See our <a href="cookies.html">Cookie Policy</a>.</p>
+
+  <h2>What we store in your browser</h2>
+  <p>A short-lived sign-in token, your chosen project and your cookie-consent choice are stored in your browser's local storage so the app works and remembers your preferences. Clearing site data removes them.</p>
+
+  <h2>Your choices</h2>
+  <p>You can export or delete your data at any time directly from your Google Sheet. Disabling email features stops all outgoing messages.</p>
+
+  <h2>Contact</h2>
+  <p>This is a prototype built for a specific user. For questions, contact the project owner.</p>
+</main>
+
+<footer class="policy-foot"><div class="wrap">
+  <span class="muted" style="font-size:13.5px">&copy; <span id="yr"></span> Vozimi. Prototype.</span>
+  <nav class="policy-links">
+    <a href="index.html">Home</a><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="refund.html">Refund</a><a href="cookies.html">Cookies</a><a href="dmca.html">DMCA</a>
+  </nav>
+</div></footer>
+<script src="js/consent.js"></script>
+<script>document.getElementById('yr').textContent=new Date().getFullYear();</script>
+</body>
+</html>
