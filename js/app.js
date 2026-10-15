@@ -281,7 +281,7 @@
     function tb(id,label,icon){return '<button class="tab" data-ago="'+id+'">'+I(icon)+'<span>'+label+'</span></button>';}
     $('#app').innerHTML='<div class="shell"><aside class="side">'+
       '<div class="side-brand"><img src="assets/icons/icon.svg" alt=""/> Vozimi <span class="admin-tag">admin</span></div>'+
-      '<nav class="nav-group" id="aNav">'+nb('adash','Dashboard','dashboard')+nb('ausers','Users','user')+nb('apay','Payments','invoice')+nb('atickets','Tickets','help')+nb('aai','AI usage','agent')+nb('alog','Activity','ledger')+'</nav>'+
+      '<nav class="nav-group" id="aNav">'+nb('adash','Dashboard','dashboard')+nb('ausers','Users','user')+nb('apay','Payments','wallet')+nb('atickets','Tickets','help')+nb('aai','AI usage','agent')+nb('alog','Activity','ledger')+'</nav>'+
       '<div class="side-foot"><div class="side-user">'+esc(S.user.email)+'</div>'+
         '<button class="nav-item" id="bellBtn">'+I('bell')+'<span>Notifications</span><span class="nbadge" id="anbadgeS"></span></button>'+
         '<button class="nav-item" id="themeToggle" data-theme-btn></button>'+
@@ -361,13 +361,20 @@
       if(!rows.length){el.innerHTML='<div class="empty"><div class="ei">'+I('user')+'</div><h3>No users yet</h3></div>';return;}
       el.innerHTML=rows.map(userRow).join('');bindUserActions(el);}).catch(function(e){toast(errMsg(e),'err');});
   }
+  var payRange='all';
+  var RANGES=[['today','Today'],['yesterday','Yesterday'],['7d','7 days'],['week','This week'],['month','This month'],['all','All']];
   function adminPayments(root){
     root.innerHTML=pageHead('Payments','Completed Razorpay payments')+'<div class="kpis" id="payK">'+'<div class="skeleton" style="height:84px"></div>'.repeat(4)+'</div>'+
-      '<div class="card" style="margin-top:16px"><div class="card-h"><h3>All payments</h3></div><div id="payList"><div class="skeleton" style="height:160px"></div></div></div>';
-    api('adminPayments',{}).then(function(d){var t=d.totals||{};var k=$('#payK');
+      '<div class="card" style="margin-top:16px"><div class="card-h"><span class="seg" id="payFilter">'+
+        RANGES.map(function(r){return '<button data-pr="'+r[0]+'" class="'+(payRange===r[0]?'on':'')+'">'+r[1]+'</button>';}).join('')+'</span></div>'+
+      '<div class="s muted" id="payRangeInfo" style="margin:0 0 8px"></div>'+
+      '<div id="payList"><div class="skeleton" style="height:160px"></div></div></div>';
+    $('#payFilter',root).addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;payRange=b.getAttribute('data-pr');adminPayments(root);});
+    api('adminPayments',{range:payRange}).then(function(d){var t=d.totals||{};var k=$('#payK');
       if(k)k.innerHTML=aKpi('Today',money(t.today),'pos')+aKpi('Today count',t.todayCount||0)+aKpi('This month',money(t.month))+aKpi('All time',money(t.all)+' · '+(t.count||0));
+      var info=$('#payRangeInfo');if(info)info.textContent=(RANGES.filter(function(r){return r[0]===payRange;})[0]||['','All'])[1]+': '+money(d.rangeTotal||0)+' · '+(d.rangeCount||0)+' payment'+((d.rangeCount||0)===1?'':'s');
       var el=$('#payList');if(!el)return;var ps=d.payments||[];
-      el.innerHTML=ps.length?ps.map(function(p){return '<div class="item" style="cursor:default"><div class="av">'+I('invoice')+'</div><div class="meta"><div class="t">'+money(p.amount)+' <span class="muted" style="font-weight:400">· '+esc(p.interval||'')+'</span></div><div class="s">'+esc(p.email||p.userId)+' · '+tDateTime(p.at)+'</div><div class="s muted" style="font-size:11px">'+esc(p.paymentId||'')+'</div></div></div>';}).join(''):'<div class="empty"><div class="ei">'+I('invoice')+'</div><h3>No payments yet</h3><p>Completed payments will appear here.</p></div>';
+      el.innerHTML=ps.length?ps.map(function(p){return '<div class="item" style="cursor:default"><div class="av">'+I('doc')+'</div><div class="meta"><div class="t">'+money(p.amount)+' <span class="muted" style="font-weight:400">· '+esc(p.interval||'')+'</span></div><div class="s">'+esc(p.email||p.userId)+' · '+tDateTime(p.at)+'</div><div class="s muted" style="font-size:11px">'+esc(p.paymentId||'')+'</div></div></div>';}).join(''):'<div class="empty"><div class="ei">'+I('doc')+'</div><h3>No payments in this range</h3><p>Completed payments will appear here.</p></div>';
     }).catch(function(e){toast(errMsg(e),'err');});
   }
   function openBroadcastSheet(){
@@ -759,6 +766,7 @@
     if(r.intent==='CREATE_TICKET'){var subj=d.subject||'Support request',msg=d.message||rawText||'';
       return commandConfirm('Raise a ticket','Send to support: "'+esc(msg)+'"?',function(){return api('support',{email:(S.user&&S.user.email)||'',subject:subj,message:msg,source:'app-voice'});},'Ticket sent');}
     if(r.intent==='ADD_TRANSACTION'){return showTxConfirm(d,rawText,true,r.confidence);}
+    if(r.intent==='CREATE_INVOICE'){return openInvoiceForm({customerName:d.customerName||'',phone:d.customerPhone||'',email:d.customerEmail||'',desc:d.description||d.note||'',amount:Number(d.amount)||0});}
     if(r.intent==='SET_LAND_COST'){return commandConfirm('Set land cost','Update land cost for '+esc(curProject().name)+' to '+money(d.amount)+'?',function(){
       return api('updateProject',{id:S.projectId,landCost:Number(d.amount)||0}).then(function(res){S.projects=S.projects.map(function(x){return x.id===res.project.id?res.project:x;});});},'Land cost updated');}
     if(r.intent==='ADD_REMINDER'){return openReminderSheet(d);}
@@ -810,6 +818,7 @@
   function itemSummary(it){
     var d=it.data||{};
     if(it.intent==='ADD_TRANSACTION'){var out=d.type!=='INCOME';return{icon:CI[d.category]||'box',title:d.vendorName||d.subCategory||((CAT[d.category]||{}).label)||'Entry',sub:(out?'Expense':'Income')+(d.subCategory?' · '+d.subCategory:''),amt:(out?'-':'+')+money(d.amount),cls:out?'out':'in'};}
+    if(it.intent==='CREATE_INVOICE'){return{icon:'doc',title:'Invoice: '+(d.customerName||'Customer'),sub:'Invoice'+(d.description?' · '+d.description:''),amt:Number(d.amount)>0?money(d.amount):'',cls:'in'};}
     if(it.intent==='ADD_REMINDER'){return{icon:'bell',title:d.title||'Reminder',sub:'Reminder · '+fmtDate(d.dueDate||todayStr())+' '+(d.time||''),amt:Number(d.amount)>0?money(d.amount):'',cls:''};}
     if(it.intent==='SET_LAND_COST'){return{icon:'land',title:'Set land cost',sub:curProject().name||'',amt:money(d.amount),cls:''};}
     if(it.intent==='ADD_PROJECT'){return{icon:'building',title:'New project: '+(d.name||''),sub:'Project',amt:'',cls:''};}
@@ -824,6 +833,9 @@
         if(!(Number(d.amount)>0))return Promise.reject(new Error('no amount'));
         if(d.category==='BOOKING')return apiWrite('createBooking',{projectId:S.projectId,customerName:d.customerName||d.vendorName||'Customer',inventoryType:d.subCategory||'',amount:Number(d.amount)||0,bookingDate:d.date||todayStr(),note:d.note||'',customerPhone:''});
         return apiWrite('createTransaction',{projectId:S.projectId,type:d.type,category:d.category,subCategory:d.subCategory||'',vendorName:d.vendorName||'',amount:Number(d.amount)||0,rate:Number(d.rate)||0,quantity:Number(d.quantity)||0,unit:d.unit||'',date:d.date||todayStr(),note:d.note||'',source:'voice',rawText:''});
+      case 'CREATE_INVOICE':
+        if(!(Number(d.amount)>0))return Promise.reject(new Error('no amount'));
+        return apiWrite('createInvoice',{projectId:S.projectId,customerName:d.customerName||'Customer',customerPhone:d.customerPhone||'',customerEmail:d.customerEmail||'',bookingId:'',date:d.date||todayStr(),items:[{desc:d.description||d.note||'Invoice',qty:1,rate:Number(d.amount)||0,amount:Number(d.amount)||0}]});
       case 'ADD_REMINDER':
         return api('createReminder',{projectId:S.projectId,title:d.title,dueDate:d.dueDate,time:d.time,remindBefore:d.remindBefore,recurrence:d.recurrence,amount:Number(d.amount)||0,notify:true});
       case 'SET_LAND_COST':
@@ -1319,7 +1331,8 @@
       openInvoiceForm();
     });
   }
-  function openInvoiceForm(){
+  function openInvoiceForm(prefill){
+    prefill=prefill||{};
     openSheet('New invoice',
       '<div class="field"><label>From booking (optional)</label><select id="iBk"><option value="">New customer</option></select><span class="field-hint">Pick a booking to fill the customer name and WhatsApp number.</span></div>'+
       '<div class="field"><label>Customer</label><input id="iN" placeholder="'+esc(custEg())+'"/></div>'+
@@ -1331,8 +1344,13 @@
       var bkMap={};
       api('listBookings',{projectId:S.projectId}).then(function(d){if(!d.bookings)return;var sel=$('#iBk',root);d.bookings.forEach(function(bk){bkMap[bk.id]=bk;sel.appendChild(h('<option value="'+esc(bk.id)+'">'+esc(bk.customerName)+(bk.customerPhone?' · '+esc(bk.customerPhone):'')+'</option>'));});}).catch(function(){});
       $('#iBk',root).onchange=function(){var bk=bkMap[this.value];if(!bk)return;$('#iN',root).value=bk.customerName||'';$('#iWa',root).value=bk.customerPhone||'';};
-      function addItem(){root.querySelector('#items').appendChild(h('<div class="row2" style="gap:8px;margin-bottom:8px"><input placeholder="Description" class="it-d"/><div style="display:flex;gap:6px"><input type="number" placeholder="Qty" class="it-q" style="width:62px"/><input type="number" placeholder="Rate" class="it-r" style="flex:1"/></div></div>'));}
-      addItem();$('#addItem',root).onclick=addItem;
+      function addItem(d){d=d||{};root.querySelector('#items').appendChild(h('<div class="row2" style="gap:8px;margin-bottom:8px"><input placeholder="Description" class="it-d" value="'+esc(d.desc||'')+'"/><div style="display:flex;gap:6px"><input type="number" placeholder="Qty" class="it-q" style="width:62px" value="'+(d.qty!=null?esc(String(d.qty)):'')+'"/><input type="number" placeholder="Rate" class="it-r" style="flex:1" value="'+(d.rate!=null?esc(String(d.rate)):'')+'"/></div></div>'));}
+      // Prefill from a voice command ("raise an invoice for X for 3 lakh").
+      if(prefill.customerName)$('#iN',root).value=prefill.customerName;
+      if(prefill.phone)$('#iWa',root).value=prefill.phone;
+      if(prefill.email)$('#iEm',root).value=prefill.email;
+      if(prefill.amount>0)addItem({desc:prefill.desc||'',qty:1,rate:prefill.amount});else addItem();
+      $('#addItem',root).onclick=function(){addItem();};
       $('#iS',root).onclick=function(){var name=$('#iN',root).value.trim();if(!name){toast('Enter customer');return;}
         var wa=$('#iWa',root).value.trim();if(wa&&!waValid(wa)){toast('Enter a valid WhatsApp number with country code','err');return;}
         var items=$all('#items .row2',root).map(function(r){var q=Number($('.it-q',r).value)||0,rate=Number($('.it-r',r).value)||0;return{desc:$('.it-d',r).value.trim(),qty:q,rate:rate,amount:q*rate};}).filter(function(it){return it.desc&&it.amount;});
