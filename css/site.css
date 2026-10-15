@@ -123,6 +123,8 @@ section{padding:84px 0}
 /* pricing */
 .pricing{background:var(--surface2)}
 .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:stretch}
+.price-grid.two{grid-template-columns:repeat(2,1fr);max-width:720px;margin:0 auto}
+.plan .amt-alt{font-size:13.5px;font-weight:600;color:var(--income,#2FA37C);margin-top:4px}
 .plan{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;
   transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
 .plan:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
