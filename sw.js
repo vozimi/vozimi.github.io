@@ -1,6 +1,6 @@
 /* Minimal service worker: cache the app shell so it loads instantly / offline.
  * API calls are never cached (they must always hit the live backend). */
-var CACHE = 'buildkhata-v52';
+var CACHE = 'buildkhata-v53';
 var SHELL = [
   './', 'index.html', 'app.html',
   'privacy.html', 'terms.html', 'refund.html', 'cookies.html', 'contact.html', 'about.html', 'dmca.html',

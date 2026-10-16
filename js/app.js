@@ -250,6 +250,24 @@
       $('#resend').onclick=function(e){e.preventDefault();api('resendOtp',{email:authState.email}).then(function(){authView('otp',{ok:'A new code is on its way.'});}).catch(function(e2){authView('otp',{msg:errMsg(e2)});});};
       $('#toLogin2').onclick=function(e){e.preventDefault();authView('login',{});};
       setTimeout(function(){var c=$('#oCode');c&&c.focus();},60);
+    } else if(view==='setpass'){
+      authShell(brand+'<h1>Set your password</h1><p class="sub">Your Pro account is ready. Choose a password to finish and sign in.</p>'+err+ok+
+        '<form id="sf"><div class="field"><label>New password</label><div class="pass-wrap"><input id="sPass" type="password" autocomplete="new-password" required placeholder="At least 8 characters"/><button type="button" class="pass-eye" id="sEye">'+I('eye')+'</button></div><span class="field-hint">Use at least 8 characters with a letter and a number.</span></div>'+
+        '<div class="field"><label>Confirm password</label><div class="pass-wrap"><input id="sPass2" type="password" autocomplete="new-password" required placeholder="Re-enter password"/><button type="button" class="pass-eye" id="sEye2">'+I('eye')+'</button></div></div>'+
+        '<button class="btn btn-primary btn-block" type="submit" id="sBtn">Set password and sign in '+I('chevronRight')+'</button></form>'+
+        '<p class="auth-switch"><a href="#" id="toLoginS">Back to sign in</a></p>');
+      bindEye('sEye','sPass');bindEye('sEye2','sPass2');
+      $('#toLoginS').onclick=function(e){e.preventDefault();try{history.replaceState(null,'',location.pathname);}catch(_){}authView('login',{});};
+      $('#sf').addEventListener('submit',function(e){e.preventDefault();
+        var pw=$('#sPass').value,pw2=$('#sPass2').value;
+        var perr=pwError(pw);if(perr){authView('setpass',{msg:perr});return;}
+        if(pw!==pw2){authView('setpass',{msg:'Passwords do not match. Please re-enter.'});return;}
+        var b=$('#sBtn');b.disabled=true;b.innerHTML='<span class="spin"></span>';
+        api('setPassword',{token:authState.setpassToken,password:pw}).then(function(d){
+          BK.api.setToken(d.token);S.user=d.user;
+          try{history.replaceState(null,'',location.pathname);}catch(_){}
+          toast('Welcome to Vozimi Pro!','ok');boot();
+        }).catch(function(e2){authView('setpass',{msg:errMsg(e2)});});});
     } else if(view==='pending'){
       authShell(brand+'<div style="text-align:center;padding:6px 0"><div class="auth-tick">'+I('check')+'</div>'+
         '<h1>Almost there</h1><p class="sub">'+esc(data.msg||'Your email is verified. Your account is awaiting approval. We will email you the moment it is active.')+'</p></div>'+
@@ -1759,7 +1777,7 @@
         var cta='';
         if(b.plan==='pro'){cta='<button class="btn btn-logout btn-block" id="upCancel" style="margin-top:14px">Cancel subscription</button>';}
         else if(!b.configured){cta='<div class="up-why" style="margin-top:14px">Payments are being set up, Pro will be available very soon.</div>';}
-        else{cta='<div class="row2" style="margin-top:14px"><button class="btn btn-primary" id="upMon">'+(b.prices.monthly?curSym()+b.prices.monthly+' / mo':'Monthly')+'</button><button class="btn btn-primary" id="upYr">'+(b.prices.yearly?curSym()+b.prices.yearly+' / yr':'Yearly')+'</button></div><p class="muted" style="font-size:12px;margin-top:8px;text-align:center">Secure checkout by Razorpay. Cancel anytime.</p>';}
+        else{cta='<div class="row2" style="margin-top:14px"><button class="btn btn-primary" id="upMon">'+(b.prices.monthly?curSym()+b.prices.monthly+' / mo':'Monthly')+'</button><button class="btn btn-primary" id="upYr">'+(b.prices.yearly?curSym()+b.prices.yearly+' / yr':'Yearly')+'</button></div><p class="muted" style="font-size:12px;margin-top:8px;text-align:center">Secure checkout by Razorpay. Auto-renews, cancel anytime.</p>';}
         $('#upBody',root).innerHTML=why+cur+feats+cta;
         var mon=$('#upMon',root);if(mon)mon.onclick=function(){startCheckout('monthly',b.keyId);};
         var yr=$('#upYr',root);if(yr)yr.onclick=function(){startCheckout('yearly',b.keyId);};
@@ -2025,11 +2043,16 @@
   function start(){
     applyTheme(getTheme());
     startI18nObserver();
+    var spm=(location.search+location.hash).match(/[?&#]setpass=([^&#]+)/);
     var proceed=function(){
+      // Someone who paid without an account lands here with a signed link to set a password.
+      if(spm){authState.setpassToken=decodeURIComponent(spm[1]);authView('setpass',{});return;}
       if(BK.api.isAuthed()&&BK.apiBase()){
         api('me',{}).then(function(u){S.user={email:u.email,role:u.role,name:u.name||'',whatsapp:u.whatsapp||'',category:u.category||'builder',plan:u.plan||'free',planUntil:u.planUntil||'',readOnly:!!u.readOnly,limits:u.limits||FREE_LIMITS};boot();}).catch(function(e){renderAuth(e.code==='UNAUTHORIZED'?'Please sign in.':'');});
       }else if(/[?&#]signup/.test(location.search+location.hash)){authView('register',{});}else{renderAuth('');}
     };
+    // A set-password link should take priority even over an existing session/lock.
+    if(spm){proceed();if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});bindConnBanner();return;}
     if(BK.api.isAuthed()&&getLock()&&!lockUnlocked())showLockScreen(proceed);else proceed();
     if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(function(){});
     bindConnBanner();

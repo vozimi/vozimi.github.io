@@ -382,7 +382,8 @@
         <div class="amt">&#8377;999<small> /month</small></div>
         <div class="amt-alt">or &#8377;9,999 /year &middot; 2 months free</div>
         <ul><li><b>Unlimited</b> voice entries</li><li>Email invoices to customers</li><li>Full history + CSV/PDF export</li><li>Custom categories &amp; all filters</li><li>Recurring entries, dues &amp; reminders</li><li>Loans, GST summary, budgets</li><li>Priority support</li></ul>
-        <a class="btn btn-dark" href="app.html?signup=1">Start free, upgrade in-app</a>
+        <button class="btn btn-dark" type="button" id="getProBtn">Get Pro now</button>
+        <a class="plan-alt" href="app.html?signup=1">or start free, upgrade later</a>
       </div>
     </div>
     <div class="pay-strip reveal">
@@ -458,10 +459,79 @@
 
 <a class="help-fab" href="contact.html" aria-label="Help and support" title="Help & Support"><span data-ic="help"></span></a>
 
+<!-- Public Pro checkout (no account needed; account is created after payment) -->
+<div class="co-bg" id="coBg" hidden>
+  <div class="co-card" role="dialog" aria-modal="true" aria-labelledby="coTitle">
+    <button class="co-x" id="coX" aria-label="Close">&times;</button>
+    <h3 id="coTitle">Get Vozimi Pro</h3>
+    <p class="co-sub">No account needed. Pay now, then set your password, we email you the link.</p>
+    <div class="co-plans" id="coPlans">
+      <button type="button" class="co-plan on" data-interval="monthly"><span class="cp-amt">&#8377;999</span><span class="cp-per">per month</span></button>
+      <button type="button" class="co-plan" data-interval="yearly"><span class="cp-amt">&#8377;9,999</span><span class="cp-per">per year · 2 months free</span></button>
+    </div>
+    <div class="co-field"><label for="coEmail">Email</label><input id="coEmail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email"/></div>
+    <div class="co-field"><label for="coName">Name <span class="co-opt">(optional)</span></label><input id="coName" type="text" placeholder="Your name"/></div>
+    <div class="co-field"><label for="coWa">WhatsApp <span class="co-opt">(optional)</span></label><input id="coWa" type="tel" inputmode="tel" placeholder="+91 98765 43210"/></div>
+    <p class="co-err" id="coErr" hidden></p>
+    <button class="btn btn-dark btn-block" id="coPay" type="button">Continue to secure payment</button>
+    <p class="co-fine">Auto-renews, cancel anytime. Payments secured by Razorpay. By continuing you agree to our <a href="terms.html">Terms</a> and <a href="refund.html">Refund policy</a>.</p>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script src="js/config.js"></script>
 <script src="js/icons.js"></script>
 <script src="js/consent.js"></script>
 <script src="js/site.js"></script>
+<script>
+/* Public Pro checkout: subscribe without an account. On success the backend webhook
+ * provisions a Pro account and emails a "set your password" link. */
+(function(){
+  var bg=document.getElementById('coBg'); if(!bg) return;
+  var interval='monthly', busy=false;
+  function open(){ bg.hidden=false; document.body.style.overflow='hidden'; var e=document.getElementById('coEmail'); if(e) setTimeout(function(){e.focus();},50); }
+  function close(){ bg.hidden=true; document.body.style.overflow=''; showErr(''); }
+  function showErr(m){ var el=document.getElementById('coErr'); if(!el) return; el.textContent=m||''; el.hidden=!m; }
+  var btn=document.getElementById('getProBtn'); if(btn) btn.addEventListener('click',open);
+  document.getElementById('coX').addEventListener('click',close);
+  bg.addEventListener('click',function(e){ if(e.target===bg) close(); });
+  document.getElementById('coPlans').addEventListener('click',function(e){ var b=e.target.closest('.co-plan'); if(!b) return;
+    interval=b.getAttribute('data-interval');
+    Array.prototype.forEach.call(this.children,function(x){ x.classList.toggle('on',x===b); });
+  });
+  function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+  document.getElementById('coPay').addEventListener('click',function(){
+    if(busy) return;
+    var email=(document.getElementById('coEmail').value||'').trim().toLowerCase();
+    var name=(document.getElementById('coName').value||'').trim();
+    var wa=(document.getElementById('coWa').value||'').trim();
+    if(!validEmail(email)){ showErr('Please enter a valid email address.'); return; }
+    if(typeof Razorpay==='undefined'){ showErr('Payment is still loading, please try again in a moment.'); return; }
+    showErr(''); busy=true; var pay=document.getElementById('coPay'); var label=pay.textContent; pay.textContent='Starting secure checkout...'; pay.disabled=true;
+    var base=(window.BK&&BK.apiBase&&BK.apiBase())||'';
+    fetch(base,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'publicCheckout',payload:{email:email,name:name,whatsapp:wa,interval:interval}})})
+      .then(function(r){return r.json();})
+      .then(function(j){
+        busy=false; pay.textContent=label; pay.disabled=false;
+        if(!j.ok){
+          if(j.code==='HAS_ACCOUNT'){ showErr('You already have an account. Redirecting you to sign in...'); setTimeout(function(){ location.href='app.html?email='+encodeURIComponent(email); },1400); return; }
+          if(j.code==='PAY_OFF'){ showErr('Online payment is not live yet. Please start free in the app, you can upgrade from inside.'); return; }
+          showErr(j.error||'Could not start checkout. Please try again.'); return;
+        }
+        var d=j.data;
+        var rz=new Razorpay({ key:d.keyId, subscription_id:d.subscriptionId, name:'Vozimi', description:'Vozimi Pro ('+d.interval+')',
+          theme:{color:'#0B0B0C'}, prefill:{ email:email, name:name, contact:wa.replace(/[^\d+]/g,'') },
+          handler:function(){
+            document.querySelector('.co-card').innerHTML='<h3>Payment received</h3><p class="co-sub">Thank you. Your Pro account is being set up.</p><p class="co-sub"><b>Check your email</b> (and spam) for a link to set your password, then sign in. It can take a minute to arrive.</p><a class="btn btn-dark btn-block" href="app.html">Go to sign in</a>';
+          },
+          modal:{ ondismiss:function(){ showErr('Payment was cancelled. You can try again anytime.'); } }
+        });
+        rz.open();
+      })
+      .catch(function(){ busy=false; pay.textContent=label; pay.disabled=false; showErr('Network error. Please check your connection and try again.'); });
+  });
+})();
+</script>
 <script>
 /* Multi-profession demo swapper for the hero mock. */
 (function(){
